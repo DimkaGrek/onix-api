@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +20,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/profile', [UserController::class, 'profile'])
-    ->middleware('auth')
+Route::get('/profile/{user}', [UserController::class, 'profile'])
     ->name('profile');
+Route::get('/users/posts', [UserController::class, 'UsersWithPosts']);
 
 Route::apiResources([
    'posts' => PostController::class
+]);
+Route::apiResources([
+    'users' => UserController::class
 ]);

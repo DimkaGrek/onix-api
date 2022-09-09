@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -13,9 +14,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Post::all();
+        if ($request->has('keywords')) return Post::where('title', 'LIKE', '%'.$request->keywords.'%')
+                                        ->orWhere('text', 'LIKE', '%'.$request->keywords.'%')->paginate();
+        else return Post::paginate();
     }
 
     /**
